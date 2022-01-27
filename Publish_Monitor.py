@@ -26,21 +26,24 @@ head_list = ['省份', '流域', '断面名称', '时间', '水质类别', '水�
 for i in range(0, len(head_list)):
     sheet.write(0, i, head_list[i])
 
-def writeExcel(excelPath, row, list):
+def writeExcel(row, list):
     for i in range(0, len(list)):
         sheet.write(i + 1, row, list[i])
 
-data_list = [[] for i in range(17)]
+data_list = [[] for i in range(len(head_list))]
 for i in range(0, len(json_data)):
-    for j in range(0, 17):
+    for j in range(0, len(head_list)):
         if (json_data[i][j] == None):
             data_list[j].append("None")
         elif (len(json_data[i][j]) > 15):
             data_list[j].append(json_data[i][j].split('>')[1][:-6])
         else:
-            data_list[j].append(json_data[i][j])
+            if (j == 0):
+                data_list[j].append(json_data[i][j] + '(' + json_data[i][j + 2].split(':')[1][:-9] + ')')
+            else:
+                data_list[j].append(json_data[i][j])
 
-for i in range(0, 17):
-    writeExcel(filename, i, data_list[i])
+for i in range(0, len(head_list)):
+    writeExcel(i, data_list[i])
 workbook.save(filename)
 print('数据获取结束，查看->'+filename)
