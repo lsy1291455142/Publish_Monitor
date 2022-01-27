@@ -43,3 +43,4 @@ for i in range(0, len(json_data)):
 for i in range(0, 17):
     writeExcel(filename, i, data_list[i])
 workbook.save(filename)
+print('数据获取结束，查看->'+filename)
