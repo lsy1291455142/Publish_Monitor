@@ -1,7 +1,9 @@
 # coding:utf-8
+import os
 import requests
 import time
 import xlwt
+import base64
 
 # 代码分别为 [大连,营口,盘锦,深圳,东莞]
 city_list = [210200, 210800, 211100, 440300, 441900]
@@ -14,9 +16,13 @@ header = {
                   'Chrome/97.0.4692.99 Safari/537.36 Edg/97.0.1072.69 '
 }
 
+# 字符串解密 input
+def decode(str_encode):
+    return base64.b64decode(str_encode).decode()
+
 for city in city_list:
     d = {'AreaID': city, 'MNName': '', 'RiverID': '', 'PageIndex': '-1', 'PageSize': '60', 'action': 'getRealDatas'}
-    r = requests.post(url="http://106.37.208.243:8068/GJZ/Ajax/Publish.ashx", data=d, headers=header).json()
+    r = requests.post(url=decode('aHR0cDovLzEwNi4zNy4yMDguMjQzOjgwNjgvR0paL0FqYXgvUHVibGlzaC5hc2h4'), data=d, headers=header).json()
     json_data = json_data + r['tbody']
 workbook = xlwt.Workbook()
 sheet = workbook.add_sheet('sheet0', cell_overwrite_ok=True)
@@ -26,7 +32,6 @@ head_list = ['省份', '流域', '断面名称', '时间', '水质类别', '水�
              '总磷(mg/L)', '总氮(mg/L)', '叶绿素(mg/L)', '藻密度(cells/L)', '站点情况']
 for i in range(0, len(head_list)):
     sheet.write(0, i, head_list[i])
-
 
 # 将列表row_list数据写到第row列 （从excel第二行开始写）
 def write_excel(row, row_list):
@@ -51,3 +56,4 @@ for i in range(0, len(head_list)):
     write_excel(i, data_list[i])
 workbook.save(filename)
 print('数据获取结束，查看->' + filename)
+os.system("pause")
