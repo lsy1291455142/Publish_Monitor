@@ -22,7 +22,7 @@ def decode(str_encode):
 
 for city in city_list:
     d = {'AreaID': city, 'MNName': '', 'RiverID': '', 'PageIndex': '-1', 'PageSize': '60', 'action': 'getRealDatas'}
-    r = requests.post(url=decode('aHR0cDovLzEwNi4zNy4yMDguMjQzOjgwNjgvR0paL0FqYXgvUHVibGlzaC5hc2h4'), data=d, headers=header).json()
+    r = requests.post(url=decode('aHR0cHM6Ly8xMDYuMzcuMjA4LjI0Mzo4MDY4L0dKWi9BamF4L1B1Ymxpc2guYXNoeA=='), data=d, headers=header, verify=False).json()
     json_data = json_data + r['tbody']
 workbook = xlwt.Workbook()
 sheet = workbook.add_sheet('sheet0', cell_overwrite_ok=True)
